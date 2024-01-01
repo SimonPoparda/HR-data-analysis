@@ -23,10 +23,6 @@ The data was provided in a .CSV format and I needed to load it into a database. 
 CREATE DATABASE HR_project;
 ```
 
-```sql
-USE HR_project;
-```
-
 And used MS SQL SERVER "Import flat file" to load the data
 
 ![](images/load_data.png)
