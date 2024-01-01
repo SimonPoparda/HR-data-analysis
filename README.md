@@ -61,6 +61,17 @@ SET termdate_fix = CASE
 ```
 ![](images/termdate_clean.png)
 
+I also created a new column called "age"
+```sql
+ALTER TABLE hr_data
+ADD age nvarchar(50);
+
+UPDATE hr_data
+SET age = DATEDIFF(year, birthdate, GETDATE());
+```
+
+- Exploratory data analysis
+
 ## Summary
 
 ## Authors
