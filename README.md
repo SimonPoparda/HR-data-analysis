@@ -8,7 +8,7 @@ In this project I performed exploratory data analysis on data from human resourc
 ## Objectives
 
 - Load data from .CSV file to MS SQL SERVER Database
-- Clean the data using SQL Queries (data standardization, changing data types, etc.)
+- Clean the data using SQL Queries (data standardization, changing data types, etc. using statements: UPDATE, ALTER, CASE )
 - Perform Exploratory Data Analysis using SQL Queries
 - Connect with MS SQL SERVER Database using PowerBI and create visualization
 
@@ -27,16 +27,7 @@ And used MS SQL SERVER "Import flat file" to load the data
 
 ![](images/load_data.png)
 
-As well as created a backup table to avoid data loss
-
-```sql
-SELECT *
-INTO backup_hr
-FROM hr_data;
-```
-
 - Data Cleaning
-
 While loading my data I noticed that "hire_date" column was not standardized and "termdate" column was not in the format and type that I wanted:
 
 
@@ -45,12 +36,14 @@ While loading my data I noticed that "hire_date" column was not standardized and
 ![](images/load_data_cleaning2.png)
 
 ```sql
-SELECT termdate
+SELECT SUBSTRING(termdate, 1, CHARINDEX('U', termdate) - 1)
 FROM hr_data
-ORDER BY termdate DESC;
 ```
 
-![](images/load_data_cleaning2.png)
+```sql
+UPDATE hr_data
+SET termdate = FORMAT(CONVERT(DATETIME, SUBSTRING(termdate, 1, CHARINDEX('U', termdate) - 1), 120), 'yyyy-MM-dd')
+```
 
 
 
