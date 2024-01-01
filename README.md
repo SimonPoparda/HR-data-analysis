@@ -28,6 +28,7 @@ And used MS SQL SERVER "Import flat file" to load the data
 ![](images/load_data.png)
 
 - Data Cleaning
+
 While loading my data I noticed that "hire_date" column was not standardized and "termdate" column was not in the format and type that I wanted:
 
 
