@@ -27,6 +27,14 @@ And used MS SQL SERVER "Import flat file" to load the data
 
 ![](images/load_data.png)
 
+As well as created a backup table to avoid data loss
+
+```sql
+SELECT *
+INTO backup_hr
+FROM hr_data;
+```
+
 - Data Cleaning
 
 While loading my data I noticed that "hire_date" column was not standardized and "termdate" column was not in the format and type that I wanted:
@@ -36,7 +44,13 @@ While loading my data I noticed that "hire_date" column was not standardized and
 
 ![](images/load_data_cleaning2.png)
 
+```sql
+SELECT termdate
+FROM hr_data
+ORDER BY termdate DESC;
+```
 
+![](images/load_data_cleaning2.png)
 
 
 
