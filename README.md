@@ -65,4 +65,4 @@ SET termdate_fix = CASE
 
 ## Authors
 
-- [@Szymon Poparda]([https://www.linkedin.com/in/szymon-poparda-02b96a248/])
+- [@Szymon Poparda](https://www.linkedin.com/in/szymon-poparda-02b96a248/)
