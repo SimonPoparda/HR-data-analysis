@@ -35,6 +35,8 @@ While loading my data I noticed that "hire_date" column was not standardized and
 
 ![](images/load_data_cleaning2.png)
 
+I run SQL Queries to fix it
+
 ```sql
 SELECT SUBSTRING(termdate, 1, CHARINDEX('U', termdate) - 1)
 FROM hr_data
@@ -45,12 +47,19 @@ UPDATE hr_data
 SET termdate = FORMAT(CONVERT(DATETIME, SUBSTRING(termdate, 1, CHARINDEX('U', termdate) - 1), 120), 'yyyy-MM-dd')
 ```
 
+```sql
+ALTER TABLE hr_data
+ADD termdate_fix DATE;
+```
 
-
-
-
-
-
+```sql
+UPDATE hr_data
+SET termdate_fix = CASE
+	WHEN termdate IS NOT NULL AND ISDATE(termdate) = 1 THEN CAST(termdate AS DATETIME)
+	ELSE NULL 
+	END;
+```
+![](images/termdate_clean.png)
 
 
 - Set up an enviroment in Jupyter Notebooks by using "pip install"
