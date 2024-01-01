@@ -7,7 +7,7 @@ In this project I performed exploratory data analysis on data from human resourc
 
 ## Objectives
 
-- Load data from CSV file to MS SQL SERVER Database
+- Load data from .CSV file to MS SQL SERVER Database
 - Clean the data using SQL Queries (data standardization, changing data types, etc.)
 - Perform Exploratory Data Analysis using SQL Queries
 - Connect with MS SQL SERVER Database using PowerBI and create visualization
@@ -17,9 +17,31 @@ In this project I performed exploratory data analysis on data from human resourc
 # Deployment
 ## Getting statistics for the channels
 
-- Generate an API key
-  
-![](images/yt_api.png)
+- Load the data into a MS SQL SERVER Database
+The data was provided in a .CSV format and I needed to load it into a database. In order to do so I created a database:
+```sql
+CREATE DATABASE HR_project;
+```
+
+And used MS SQL SERVER "Import flat file" to load the data
+
+![](images/load_data.png)
+
+- Data Cleaning
+While loading my data I noticed that "hire_date" column was not standardized and "termdate" column was not in the format and type that I wanted:
+![](images/load_data_cleaning.png)
+
+![](images/load_data_cleaning2.png)
+
+
+
+
+
+
+
+
+
+
 
 - Set up an enviroment in Jupyter Notebooks by using "pip install"
   
