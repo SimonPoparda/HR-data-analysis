@@ -8,7 +8,7 @@ In this project I performed exploratory data analysis on data from human resourc
 ## Objectives
 
 - Load data from .CSV file to MS SQL SERVER Database
-- Clean the data using SQL Queries (data standardization, changing data types, etc. using statements: UPDATE, ALTER, CASE )
+- Clean the data using SQL Queries (data standardization, changing data types, etc. using: UPDATE, ALTER, CASE, subqueries, VIEWS)
 - Perform Exploratory Data Analysis using SQL Queries
 - Connect with MS SQL SERVER Database using PowerBI and create visualization
 
@@ -71,6 +71,55 @@ SET age = DATEDIFF(year, birthdate, GETDATE());
 ```
 
 - Exploratory data analysis
+```sql
+-- 1) What's the age distribution in the company?
+-- age distribution
+SELECT 
+	MIN(age) as Youngest_Employee,
+	MAX(age) as Oldest_Employee
+FROM hr_data;
+
+-- age group count
+SELECT age_group, count(*) as count_groups
+FROM
+(SELECT CASE
+	WHEN age >= 22 and age <= 30 THEN '22 - 30'
+	WHEN age >= 31 and age <= 50 THEN '31 - 40'
+	WHEN age >= 31 and age <= 50 THEN '41 - 50'
+	ELSE '50+'
+	END AS age_group
+FROM hr_data
+WHERE termdate_fix IS NULL
+) AS sub_age_groups  -- have not been terminated yet
+GROUP BY age_group
+ORDER BY age_group
+
+-- age group by gender
+SELECT age_group, gender, count(*) as count_groups
+FROM
+(SELECT gender, CASE
+	WHEN age >= 22 and age <= 30 THEN '22 - 30'
+	WHEN age >= 31 and age <= 50 THEN '31 - 40'
+	WHEN age >= 31 and age <= 50 THEN '41 - 50'
+	ELSE '50+'
+	END AS age_group
+FROM hr_data
+WHERE termdate_fix IS NULL
+) AS sub_age_groups  -- have not been terminated yet
+GROUP BY age_group, gender
+ORDER BY age_group, gender
+```
+
+```sql
+--2) What's the gender breakdown in the company?
+SELECT gender, count(*) as count_gender
+FROM hr_data
+WHERE termdate_fix IS NULL
+GROUP BY gender
+ORDER BY gender ASC;
+```
+
+
 
 ## Summary
 
