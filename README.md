@@ -119,9 +119,113 @@ GROUP BY gender
 ORDER BY gender ASC;
 ```
 
+```sql
+--3) How does gender vary across departments and job titles? 
+SELECT jobtitle, gender, COUNT(*) as job_count
+FROM hr_data
+WHERE termdate_fix IS NULL
+GROUP BY jobtitle, gender
+ORDER BY jobtitle, gender ASC;
 
+SELECT department, gender, COUNT(*) as department_count
+FROM hr_data
+WHERE termdate_fix IS NULL
+GROUP BY department, gender
+ORDER BY department, gender ASC;
+```
+
+```sql
+--4) What's the race distribution in the company?
+SELECT race, COUNT(*) as race_count
+FROM hr_data
+WHERE termdate_fix IS NULL
+GROUP BY race
+ORDER BY race_count DESC;
+```
+
+```sql
+--5) What's the average length of employment in the company?
+SELECT 
+    hire_date, 
+    termdate_fix,
+    DATEDIFF(YEAR, hire_date, termdate_fix) AS date_difference_years,
+    DATEDIFF(MONTH, hire_date, termdate_fix) % 12 AS date_difference_months
+FROM 
+    hr_data
+WHERE 
+    termdate_fix IS NOT NULL;
+
+SELECT AVG(DATEDIFF(MONTH, hire_date, termdate_fix)) / 12 AS Avg_time
+FROM hr_data
+WHERE termdate_fix IS NOT NULL AND termdate_fix <= GETDATE();
+```
+
+```sql
+--6) Which department has the highest turnover rate?
+SELECT department, 
+    terminated_count, 
+    total_count,
+	(ROUND((CAST(terminated_count AS FLOAT) * 100.00 / total_count), 2)) AS termination_percentage -- only 2 decimal places
+FROM 
+(SELECT department, COUNT(*) AS total_count, SUM(CASE
+	WHEN termdate_fix IS NOT NULL AND termdate_fix <= GETDATE() 
+	THEN 1 ELSE 0
+	END) AS terminated_count
+FROM hr_data
+GROUP BY department
+) AS subquery
+ORDER BY termination_percentage DESC;
+```
+
+```sql
+--7) What is the tenure distribution for each department?
+SELECT department, AVG(DATEDIFF(MONTH, hire_date, termdate_fix)) / 12 AS Avg_time
+FROM hr_data
+WHERE termdate_fix IS NOT NULL AND termdate_fix <= GETDATE()
+GROUP BY department
+ORDER BY Avg_time DESC;
+```
+
+```sql
+--8) How have employee hire counts varied over time?
+SELECT YEAR(hire_date) AS hire_year, COUNT(*) AS total_count
+FROM hr_data
+GROUP BY YEAR(hire_date)
+ORDER BY hire_year;
+
+SELECT SUM(total_count) AS sum_hires
+FROM
+(
+    SELECT 
+        YEAR(hire_date) AS hire_year, 
+        COUNT(*) AS total_count
+    FROM hr_data
+    GROUP BY YEAR(hire_date)
+) AS subquery; -- sum of hires
+```
+
+```sql
+-- hires and terminations
+SELECT 
+	hire_year,
+	hires,
+	terminations,
+	hires - terminations AS net_change,
+	ROUND(CAST(hires - terminations AS float)/hires, 2) * 100 AS percent_hire_change
+FROM (
+	SELECT 
+		YEAR(hire_date) AS hire_year,
+		COUNT(*) AS hires,
+		SUM(CASE 
+				WHEN termdate_fix IS NOT NULL AND termdate_fix <= GETDATE() THEN 1 ELSE 0
+				END) AS terminations
+	FROM hr_data
+	GROUP BY YEAR(hire_date)) AS subquery
+ORDER BY hire_year;
+```
 
 ## Summary
+With this query I finished my project. I found meaningful insides and practiced lots of SQL!
 
 ## Authors
 
