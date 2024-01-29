@@ -1,6 +1,6 @@
 # HR Data Analysis
 
-In this project I performed exploratory data analysis on data from human resources department, as well as cleaned and visualized the data using SQL and PowerBI
+In this project I performed exploratory data analysis on data from human resources department, as well as cleaned  the data using SQL
 
 
 
