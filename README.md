@@ -71,6 +71,7 @@ SET age = DATEDIFF(year, birthdate, GETDATE());
 ```sql
 -- 1) What's the age distribution in the company?
 -- age distribution
+
 SELECT 
 	MIN(age) as Youngest_Employee,
 	MAX(age) as Oldest_Employee
@@ -109,6 +110,7 @@ ORDER BY age_group, gender
 
 ```sql
 --2) What's the gender breakdown in the company?
+
 SELECT gender, count(*) as count_gender
 FROM hr_data
 WHERE termdate_fix IS NULL
@@ -117,7 +119,8 @@ ORDER BY gender ASC;
 ```
 
 ```sql
---3) How does gender vary across departments and job titles? 
+--3) How does gender vary across departments and job titles?
+
 SELECT jobtitle, gender, COUNT(*) as job_count
 FROM hr_data
 WHERE termdate_fix IS NULL
@@ -133,6 +136,7 @@ ORDER BY department, gender ASC;
 
 ```sql
 --4) What's the race distribution in the company?
+
 SELECT race, COUNT(*) as race_count
 FROM hr_data
 WHERE termdate_fix IS NULL
@@ -142,6 +146,7 @@ ORDER BY race_count DESC;
 
 ```sql
 --5) What's the average length of employment in the company?
+
 SELECT 
     hire_date, 
     termdate_fix,
@@ -159,6 +164,7 @@ WHERE termdate_fix IS NOT NULL AND termdate_fix <= GETDATE();
 
 ```sql
 --6) Which department has the highest turnover rate?
+
 SELECT department, 
     terminated_count, 
     total_count,
@@ -176,6 +182,7 @@ ORDER BY termination_percentage DESC;
 
 ```sql
 --7) What is the tenure distribution for each department?
+
 SELECT department, AVG(DATEDIFF(MONTH, hire_date, termdate_fix)) / 12 AS Avg_time
 FROM hr_data
 WHERE termdate_fix IS NOT NULL AND termdate_fix <= GETDATE()
@@ -185,6 +192,7 @@ ORDER BY Avg_time DESC;
 
 ```sql
 --8) How have employee hire counts varied over time?
+
 SELECT
     YEAR(hire_date) AS hire_year,
     COUNT(*) AS total_count
@@ -206,6 +214,7 @@ FROM (
 
 ```sql
 -- hires and terminations
+
 SELECT 
     hire_year,
     hires,
