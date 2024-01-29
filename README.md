@@ -10,9 +10,6 @@ In this project I performed exploratory data analysis on data from human resourc
 - Load data from .CSV file to MS SQL SERVER Database
 - Clean the data using SQL Queries (data standardization, changing data types, etc. using: UPDATE, ALTER, CASE, subqueries, VIEWS)
 - Perform Exploratory Data Analysis using SQL Queries
-- Connect with MS SQL SERVER Database using PowerBI and create visualization
-
-
 
 # Deployment
 ## Getting statistics for the channels
@@ -188,39 +185,41 @@ ORDER BY Avg_time DESC;
 
 ```sql
 --8) How have employee hire counts varied over time?
-SELECT YEAR(hire_date) AS hire_year, COUNT(*) AS total_count
+SELECT
+    YEAR(hire_date) AS hire_year,
+    COUNT(*) AS total_count
 FROM hr_data
 GROUP BY YEAR(hire_date)
 ORDER BY hire_year;
 
-SELECT SUM(total_count) AS sum_hires
-FROM
-(
-    SELECT 
-        YEAR(hire_date) AS hire_year, 
+SELECT
+    SUM(total_count) AS sum_hires
+FROM (
+    SELECT
+        YEAR(hire_date) AS hire_year,
         COUNT(*) AS total_count
     FROM hr_data
     GROUP BY YEAR(hire_date)
-) AS subquery; -- sum of hires
+) AS subquery; -- Sum of hires
+
 ```
 
 ```sql
 -- hires and terminations
 SELECT 
-	hire_year,
-	hires,
-	terminations,
-	hires - terminations AS net_change,
-	ROUND(CAST(hires - terminations AS float)/hires, 2) * 100 AS percent_hire_change
+    hire_year,
+    hires,
+    terminations,
+    hires - terminations AS net_change,
+    ROUND((CAST(hires - terminations AS float) / hires) * 100, 2) AS percent_hire_change
 FROM (
-	SELECT 
-		YEAR(hire_date) AS hire_year,
-		COUNT(*) AS hires,
-		SUM(CASE 
-				WHEN termdate_fix IS NOT NULL AND termdate_fix <= GETDATE() THEN 1 ELSE 0
-				END) AS terminations
-	FROM hr_data
-	GROUP BY YEAR(hire_date)) AS subquery
+    SELECT 
+        YEAR(hire_date) AS hire_year,
+        COUNT(*) AS hires,
+        SUM(CASE WHEN termdate_fix IS NOT NULL AND termdate_fix <= GETDATE() THEN 1 ELSE 0 END) AS terminations
+    FROM hr_data
+    GROUP BY YEAR(hire_date)
+) AS subquery
 ORDER BY hire_year;
 ```
 
